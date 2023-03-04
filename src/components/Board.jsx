@@ -1,7 +1,7 @@
 import Squares from "./Squares";
 import Statu from "./Statu";
 import ResetButoon from "./RestBoardButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function ckeckGameEnd(squaresState) {
   if (checkWinner(squaresState) || SquaresFull(squaresState)) {
@@ -55,10 +55,13 @@ function checkWinner(squaresState) {
 }
 
 function Board() {
-  const [squaresState, setSquaresState] = useState(Array(9).fill(null));
+  const [squaresState, setSquaresState] = useState(JSON.parse(window.localStorage.getItem('squares'))||Array(9).fill(null));
   const [xOrO, setXOrO] = useState("X");
   const [gameStatus, setGameStatus] = useState(Array(2).fill(null));
-
+  
+  useEffect(()=>{
+    window.localStorage.setItem("squares",JSON.stringify(squaresState))
+  })
   function resetB() {
     setSquaresState(Array(9).fill(null));
     setXOrO("X");
@@ -80,7 +83,9 @@ function Board() {
         status={
           checkWinner(squaresState)
             ? "winer is : " + (xOrO == "X" ? "O" : "X")
-            : (SquaresFull(squaresState)?"game is draw":"turn of : " + xOrO)
+            : SquaresFull(squaresState)
+            ? "game is draw"
+            : "turn of : " + xOrO
         }
       ></Statu>
       <div className="board">
@@ -102,5 +107,6 @@ function Board() {
     </>
   );
 }
+
 
 export default Board;
