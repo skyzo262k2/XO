@@ -1,6 +1,7 @@
 import Squares from "./Squares";
 import Statu from "./Statu";
 import ResetButoon from "./RestBoardButton";
+import HistoCompo from "./HistoCompo";
 import { useEffect, useState } from "react";
 
 function ckeckGameEnd(squaresState) {
@@ -55,13 +56,16 @@ function checkWinner(squaresState) {
 }
 
 function Board() {
-  const [squaresState, setSquaresState] = useState(JSON.parse(window.localStorage.getItem('squares'))||Array(9).fill(null));
+  const [squaresState, setSquaresState] = useState(() => {
+    return JSON.parse(window.localStorage.getItem("squares")) || Array(9).fill(null);
+  });
   const [xOrO, setXOrO] = useState("X");
   const [gameStatus, setGameStatus] = useState(Array(2).fill(null));
-  
-  useEffect(()=>{
-    window.localStorage.setItem("squares",JSON.stringify(squaresState))
-  })
+
+  useEffect(() => {
+    window.localStorage.setItem("squares", JSON.stringify(squaresState));
+  });
+
   function resetB() {
     setSquaresState(Array(9).fill(null));
     setXOrO("X");
@@ -107,6 +111,5 @@ function Board() {
     </>
   );
 }
-
 
 export default Board;
