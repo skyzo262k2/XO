@@ -57,7 +57,9 @@ function checkWinner(squaresState) {
 
 function Board() {
   const [squaresState, setSquaresState] = useState(() => {
-    return JSON.parse(window.localStorage.getItem("squares")) || Array(9).fill(null);
+    return (
+      JSON.parse(window.localStorage.getItem("squares")) || Array(9).fill(null)
+    );
   });
   const [xOrO, setXOrO] = useState("X");
   const [gameStatus, setGameStatus] = useState(Array(2).fill(null));
@@ -82,33 +84,39 @@ function Board() {
   // "turn of : " + xOrO
 
   return (
-    <>
-      <Statu
-        status={
-          checkWinner(squaresState)
-            ? "winer is : " + (xOrO == "X" ? "O" : "X")
-            : SquaresFull(squaresState)
-            ? "game is draw"
-            : "turn of : " + xOrO
-        }
-      ></Statu>
-      <div className="board">
-        {squaresState.map((e, i) => (
-          <Squares
-            key={i}
-            squareId={i}
-            squareValue={e}
-            handleSquareClick={handleSquareClick}
-          />
-        ))}
+    <div className="cont">
+      <div>
+        <Statu
+          status={
+            checkWinner(squaresState)
+              ? "winer is : " + (xOrO == "X" ? "O" : "X")
+              : SquaresFull(squaresState)
+              ? "game is draw"
+              : "turn of : " + xOrO
+          }
+        ></Statu>
+        <div className="board">
+          {squaresState.map((e, i) => (
+            <Squares
+              key={i}
+              squareId={i}
+              squareValue={e}
+              handleSquareClick={handleSquareClick}
+            />
+          ))}
+        </div>
+        {ckeckGameEnd(squaresState) ? (
+          <ResetButoon
+            resetButton={resetB}
+            buttonStatu={"click me to replay"}
+          ></ResetButoon>
+        ) : null}
       </div>
-      {ckeckGameEnd(squaresState) ? (
-        <ResetButoon
-          resetButton={resetB}
-          buttonStatu={"click me to replay"}
-        ></ResetButoon>
-      ) : null}
-    </>
+      <div>
+        <HistoCompo histoKey={1} histoState={"heyyy"}></HistoCompo>
+
+      </div>
+    </div>
   );
 }
 
